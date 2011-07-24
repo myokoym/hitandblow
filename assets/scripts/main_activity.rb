@@ -11,19 +11,32 @@ $activity.handle_create do |bundle|
     linear_layout :orientation => LinearLayout::VERTICAL do
       @input_view = text_view :text => @input.join, :width => :wrap_content, :id => 42
       linear_layout :orientation => LinearLayout::HORIZONTAL do
-        0.upto(9) do |i|
-          button :text => "#{i}", :width => :wrap_content, :id => 43 + i
-        end
+        button :text => "1", :width => 70, :height => 70, :id => 51
+        button :text => "2", :width => 70, :height => 70, :id => 52
+        button :text => "3", :width => 70, :height => 70, :id => 53
       end
 
       linear_layout :orientation => LinearLayout::HORIZONTAL do
-        button :text => "Submit", :width => :wrap_content, :id => 61
-        button :text => "Delete", :width => :wrap_content, :id => 62
+        button :text => "4", :width => 70, :height => 70, :id => 54
+        button :text => "5", :width => 70, :height => 70, :id => 55
+        button :text => "6", :width => 70, :height => 70, :id => 56
+      end
+
+      linear_layout :orientation => LinearLayout::HORIZONTAL do
+        button :text => "7", :width => 70, :height => 70, :id => 57
+        button :text => "8", :width => 70, :height => 70, :id => 58
+        button :text => "9", :width => 70, :height => 70, :id => 59
+      end
+
+      linear_layout :orientation => LinearLayout::HORIZONTAL do
+        button :text => "Delete", :width => 70, :height => 40, :id => 62
+        button :text => "0", :width => 70, :height => 70, :id => 50
+        button :text => "Submit", :width => 70, :height => 40,:id => 61
       end
 
       linear_layout :orientation => LinearLayout::VERTICAL do
-      @answer_view = text_view :text => "", :width => :fill_parent, :id => 71
-      @hit_blow_view = text_view :text => "", :width => :fill_parent, :id => 72
+        @answer_view = text_view :text => "", :width => :fill_parent, :id => 71
+        @hit_blow_view = text_view :text => "", :width => :fill_parent, :id => 72
       end
     end
   end
@@ -41,7 +54,7 @@ $activity.handle_create do |bundle|
       hit = @input.zip(@answer).count {|v| v.uniq.size == 1 }
       blow = @input.count {|v| @answer.include?(v) }
       blow = blow - hit
-      @answer_view.setText @answer.join
+      @answer_view.setText @input.join
       @hit_blow_view.setText "hit: #{hit}, blow: #{blow}"
     end
   end

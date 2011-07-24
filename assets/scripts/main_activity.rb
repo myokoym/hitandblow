@@ -6,9 +6,10 @@ $activity.handle_create do |bundle|
   setTitle 'Hit and Blow!'
 
   setup_content do
-    @input_text = []
+    @answer = Array.new(4) { rand(10).to_s }
+    @input = []
     linear_layout :orientation => LinearLayout::VERTICAL do
-      @text_view = text_view :text => @input_text.join, :width => :wrap_content, :id => 42
+      @input_view = text_view :text => @input.join, :width => :wrap_content, :id => 42
       linear_layout :orientation => LinearLayout::HORIZONTAL do
         0.upto(9) do |i|
           button :text => "#{i}", :width => :wrap_content, :id => 43 + i
@@ -19,17 +20,29 @@ $activity.handle_create do |bundle|
         button :text => "Submit", :width => :wrap_content, :id => 61
         button :text => "Delete", :width => :wrap_content, :id => 62
       end
+
+      linear_layout :orientation => LinearLayout::VERTICAL do
+      @answer_view = text_view :text => "", :width => :fill_parent, :id => 71
+      @hit_blow_view = text_view :text => "", :width => :fill_parent, :id => 72
+      end
     end
   end
 
   handle_click do |view|
-    if /\d+/ =~ view.getText 
-      @input_text << view.getText
-      @text_view.setText @input_text.join
-      toast 'input!'
-    elsif view.getText == "Delete"
-      @input_text.pop
-      @text_view.setText @input_text.join
+    case view.getText
+    when /\d+/ 
+      @input << view.getText
+      @input_view.setText @input.join
+      #toast 'input!'
+    when "Delete"
+      @input.pop
+      @input_view.setText @input.join
+    when "Submit"
+      hit = @input.zip(@answer).count {|v| v.uniq.size == 1 }
+      blow = @input.count {|v| @answer.include?(v) }
+      blow = blow - hit
+      @answer_view.setText @answer.join
+      @hit_blow_view.setText "hit: #{hit}, blow: #{blow}"
     end
   end
 end

@@ -6,9 +6,9 @@ $activity.handle_create do |bundle|
   setTitle 'Hit and Blow!'
 
   setup_content do
-    @input_text = ""
+    @input_text = []
     linear_layout :orientation => LinearLayout::VERTICAL do
-      @text_view = text_view :text => @input_text, :width => :wrap_content, :id => 42
+      @text_view = text_view :text => @input_text.join, :width => :wrap_content, :id => 42
       linear_layout :orientation => LinearLayout::HORIZONTAL do
         0.upto(9) do |i|
           button :text => "#{i}", :width => :wrap_content, :id => 43 + i
@@ -25,8 +25,11 @@ $activity.handle_create do |bundle|
   handle_click do |view|
     if /\d+/ =~ view.getText 
       @input_text << view.getText
-      @text_view.setText @input_text
+      @text_view.setText @input_text.join
       toast 'input!'
+    elsif view.getText == "Delete"
+      @input_text.pop
+      @text_view.setText @input_text.join
     end
   end
 end

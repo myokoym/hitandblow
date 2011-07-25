@@ -4,14 +4,16 @@ ruboto_import_widgets :TextView, :EditText, :LinearLayout, :Button
 
 $activity.handle_create do |bundle|
   setTitle 'Hit and Blow!'
-  CELL_SIDE = 70
-  CELL_HEIGHT = 40
 
   setup_content do
-    @answer = Array.new(4) { rand(10).to_s }
+    @answer = Array.new(10) {|i| i.to_s }.shuffle.slice(0, 4)
     @input = []
+
     linear_layout :orientation => LinearLayout::VERTICAL do
+      NUM_BTN_SIDE = 70
+      CTRL_BTN_HEIGHT = 40
       @input_view = edit_text :text => @input.join, :width => :wrap_content, :id => 42
+
       linear_layout :orientation => LinearLayout::HORIZONTAL do
         button :text => "1", :width => CELL_SIDE, :height => CELL_SIDE, :id => 51
         button :text => "2", :width => CELL_SIDE, :height => CELL_SIDE, :id => 52
@@ -48,7 +50,6 @@ $activity.handle_create do |bundle|
     when /\d+/ 
       @input << view.getText
       @input_view.setText @input.join
-      #toast 'input!'
     when "Delete"
       @input.pop
       @input_view.setText @input.join
